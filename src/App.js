@@ -12,7 +12,7 @@ class App extends Component {
     this.deleteCourse = this.deleteCourse.bind(this);
     this.editCourseSubmit = this.editCourseSubmit.bind(this);
   }
-  componentWillMount() {}
+
   addNewCourse() {
     this.props.addCourse({
       id:
@@ -23,7 +23,7 @@ class App extends Component {
         ) + 1,
       name: "",
       description: 1,
-      textbooks: ""
+      textbooks: []
     });
   }
 

@@ -1,9 +1,13 @@
 import React, { Component } from "react";
+import TextbookItem from "./TextbookItem.jsx";
 
 export default class CourseItem extends Component {
   constructor(props) {
     super(props);
-    this.state = { isEdit: false };
+    this.state = {
+      isEdit: false,
+      textbooks: []
+    };
     this.editCourse = this.editCourse.bind(this);
     this.editCourseSubmit = this.editCourseSubmit.bind(this);
     this.deleteCourse = this.deleteCourse.bind(this);
@@ -21,13 +25,19 @@ export default class CourseItem extends Component {
     this.setState((prevState, props) => ({
       isEdit: !prevState.isEdit
     }));
+
     this.props.editCourseSubmit(
       this.props.course.id,
       this.nameInput.value,
       this.descriptionInput.value,
-      this.textbooksInput.value
+      this.state.textbooks
     );
   }
+
+  textbooksData = data => {
+    this.setState({ textbooks: data });
+  };
+
   render() {
     const { id, name, description, textbooks } = this.props.course;
     return this.state.isEdit === true ? (
@@ -46,10 +56,7 @@ export default class CourseItem extends Component {
           />
         </td>
         <td>
-          <input
-            ref={textbooksInput => (this.textbooksInput = textbooksInput)}
-            defaultValue={textbooks}
-          />
+          <TextbookItem textbooksData={this.textbooksData} />
         </td>
         <td>
           <i className="far fa-save" onClick={this.editCourseSubmit}></i>
@@ -64,9 +71,9 @@ export default class CourseItem extends Component {
         <td>{name}</td>
         <td>{description}</td>
         <td>
-          {textbooks != undefined
-            ? textbooks.map(item => (
-                <p>
+          {textbooks !== undefined
+            ? textbooks.map((item, i) => (
+                <p key={i}>
                   {item.author} / {item.title}
                 </p>
               ))
